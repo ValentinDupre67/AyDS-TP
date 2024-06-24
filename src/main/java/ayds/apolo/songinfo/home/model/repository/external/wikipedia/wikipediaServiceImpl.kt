@@ -1,24 +1,20 @@
-package ayds.apolo.songinfo.home.model.repository.broker
+package ayds.apolo.songinfo.home.model.repository.external.wikipedia
 
+import ayds.apolo.songinfo.home.model.entities.SearchResult
 import ayds.apolo.songinfo.home.model.entities.SpotifySong
-import ayds.apolo.songinfo.home.model.repository.external.wikipedia.WikipediaAPI
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.IOException
 
-class WikipediaProxy {
+interface WikipediaService{
+    fun getSong(term: String): SpotifySong?
+}
 
-    var retrofit: Retrofit? = Retrofit.Builder()
-        .baseUrl("https://en.wikipedia.org/w/")
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .build()
-
-    var wikipediaAPI = retrofit!!.create(WikipediaAPI::class.java)
-
-    fun getSong(term:String) : SpotifySong?{
+internal class WikipediaServiceImpl(
+    private val wikipediaAPI : WikipediaAPI
+) : WikipediaService{
+    override fun getSong(term : String): SpotifySong? {
         val callResponse: Response<String>
         try {
             callResponse = wikipediaAPI.getInfo(term).execute()
@@ -36,5 +32,4 @@ class WikipediaProxy {
         }
         return null
     }
-
 }
