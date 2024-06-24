@@ -32,7 +32,6 @@ object HomeModelInjector {
     .addConverterFactory(ScalarsConverterFactory.create())
     .build()
   var wikipediaAPI = retrofit!!.create(WikipediaAPI::class.java)
-
   val wikipedia : WikipediaService = WikipediaServiceImpl(wikipediaAPI)
 
   val broker : SongBroker = SongBrokerImpl(spotifyTrackService, wikipedia)
