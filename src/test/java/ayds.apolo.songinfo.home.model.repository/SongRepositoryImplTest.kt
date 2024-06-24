@@ -9,10 +9,10 @@ import org.junit.Assert
 import org.junit.Test
 
 
-class SongRepositoryTest {
+class SongRepositoryImplTest {
 
     private val songRepository by lazy {
-        SongRepository()
+        SongRepositoryImpl()
     }
 
     @Test
