@@ -28,7 +28,7 @@ internal class SongRepositoryImpl(
     override fun getSongByTerm(term: String): SearchResult {
         var song = internalCache.getResultFromCache(term)
         if (song != null) {
-            song.markIsCacheStore() as 
+            song.markIsCacheStore()
             return song
         }else{
             song = internalSpotifiyDataBase.getSongByTerm(term)
