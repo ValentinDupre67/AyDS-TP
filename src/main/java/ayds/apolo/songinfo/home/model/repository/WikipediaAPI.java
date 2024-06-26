@@ -1,4 +1,4 @@
-package ayds.apolo.songinfo.home.model.repository.external.wikipedia;
+package ayds.apolo.songinfo.home.model.repository;
 
 
 import retrofit2.Call;
