@@ -7,14 +7,14 @@ import ayds.apolo.songinfo.home.model.repository.external.spotify.SpotifyTrackSe
 import ayds.apolo.songinfo.home.model.repository.external.wikipedia.WikipediaService
 
 interface SongBroker{
-    fun getSong(term : String) : SpotifySong?
+    fun getSong(term : String) : SearchResult?
 }
 
 internal class SongBrokerImpl(
     private val spotifyTrackService: SpotifyTrackService,
     private val wikipedia : WikipediaService
 ) : SongBroker{
-    override fun getSong(term : String) : SpotifySong?{
+    override fun getSong(term : String) : SearchResult?{
         var song = spotifyTrackService.getSong(term)
         if(song != null){
             return song
