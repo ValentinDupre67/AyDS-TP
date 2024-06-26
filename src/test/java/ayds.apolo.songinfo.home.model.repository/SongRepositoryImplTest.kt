@@ -1,41 +1,34 @@
 package ayds.apolo.songinfo.home.model.repository
 
 import ayds.apolo.songinfo.home.model.entities.SpotifySong
-import ayds.apolo.songinfo.home.model.repository.broker.SongBroker
-import ayds.apolo.songinfo.home.model.repository.local.Cache.Cache
-import ayds.apolo.songinfo.home.model.repository.local.spotify.SpotifyLocalStorage
+import ayds.apolo.songinfo.home.model.repository.external.spotify.SpotifyTrackService
 import io.mockk.every
 import io.mockk.mockk
-
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import io.mockk.verify
+import org.junit.Assert
 import org.junit.Test
 
-private val internalSpotifiyDataBase: SpotifyLocalStorage = mockk(relaxUnitFun = true)
-private val broker: SongBroker = mockk(relaxUnitFun = true)
-private val internalCache: Cache = mockk(relaxUnitFun = true)
-private val repository : SongRepository = SongRepositoryImpl(internalSpotifiyDataBase, broker, internalCache)
 
 class SongRepositoryImplTest {
 
-    val term = "duki"
-    @Test
-    fun `when getSongByTerm return a song from cache`() {
-        val mockSong = SpotifySong(
-            id = "id",
-            songName = "songName",
-            artistName = term,
-            albumName = "albunName",
-            releaseDate = "releaseDate",
-            spotifyUrl = "spotifyUrl",
-            imageUrl = "imageUrl",
-            isLocallyStored =  false,
-            isCacheStored =  false
-        )
-        every { internalCache.getResultFromCache(term) } returns mockSong
+    private val songRepository by lazy {
+        SongRepositoryImpl()
+    }
 
-        val result = repository.getSongByTerm(term)
-        assertEquals(result,mockSong)
-        assertTrue(mockSong.isCacheStored)
+    @Test
+    fun `tests references`() {
+
+        // Mock an object
+        val service: SpotifyTrackService = mockk()
+        val song: SpotifySong = mockk()
+
+        // mock a response
+        every { service.getSong("title")} returns song
+
+        // assertions
+        Assert.assertEquals(service.getSong("title"), song)
+
+        // verify mock was called
+        verify { service.getSong("title") }
     }
 }
